@@ -1,13 +1,19 @@
 CC = gcc
 CFLAGS = -Iinclude
-SRC = src/binary_tree.c src/queue.c src/main.c
-OBJ = $(SRC:.c=.o)
-EXEC = dictionary
+SRC = src/makeSvg.c src/main.c
+OBJ = $(patsubst src/%.c, build/%.o, $(SRC))
+EXEC = build/svg_program
 
 all: $(EXEC)
 
+build/%.o: src/%.c
+	@mkdir -p build
+	$(CC) $(CFLAGS) -c $< -o $@
+
 $(EXEC): $(OBJ)
-	$(CC) -o $@ $^
+	@mkdir -p build
+	$(CC) -o $@ $^ -lm  
+
 
 clean:
-	rm -f $(OBJ) $(EXEC)
+	rm -f build/*.o build/svg_program 
